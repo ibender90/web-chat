@@ -3,12 +3,13 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,13 +19,13 @@ public class ChatController implements Initializable {
     @FXML
     private VBox mainPanel;
     @FXML
-    public TextArea chatArea;
+    private TextArea chatArea;
     @FXML
-    public ListView contacts;
+    private ListView contacts;
     @FXML
-    public TextField inputField;
+    private TextField inputField;
     @FXML
-    public Button btnSend;
+    private Button btnSend;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -37,8 +38,19 @@ public class ChatController implements Initializable {
         if (text == null || text.isBlank()) {
             return;
         }
-        chatArea.appendText(text + System.lineSeparator());
+        chatArea.appendText(getPrefix() + ": " + text + System.lineSeparator());
         inputField.clear();
+    }
+
+    private String getPrefix(){
+        if (getSelectedContactName() == null){
+            return "Broadcast";
+        } else return getSelectedContactName();
+    }
+
+    public String getSelectedContactName(){
+        SelectionModel model = contacts.getSelectionModel(); //чем его правильно параметризировать ?
+        return (String) model.getSelectedItem();
     }
 
     public void closeApplication(ActionEvent actionEvent) {
@@ -47,5 +59,14 @@ public class ChatController implements Initializable {
 
     public void mockAction(ActionEvent actionEvent) {
         System.out.println("not finished");
+    }
+
+    public void showHelp(ActionEvent actionEvent) { //простой вариант
+        try {
+            Desktop.getDesktop().browse(
+                    new URL("http://github.com/ibender90/web-chat/blob/master/README.md").toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
