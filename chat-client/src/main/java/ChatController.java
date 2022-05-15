@@ -62,9 +62,9 @@ public class ChatController implements Initializable {
     }
 
     public void showHelp(ActionEvent actionEvent) { //простой вариант
+        String FAQ = "http://github.com/ibender90/web-chat/blob/master/README.md"; // куда положить?
         try {
-            Desktop.getDesktop().browse(
-                    new URL("http://github.com/ibender90/web-chat/blob/master/README.md").toURI());
+            Desktop.getDesktop().browse(new URL(FAQ).toURI());
         } catch (Exception e) {
             e.printStackTrace();
         }
